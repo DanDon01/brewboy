@@ -87,7 +87,7 @@ WantedBy=multi-user.target
 
 ## Screenshots
 
-![BrewBoy App Interface](screenshot1.png)
+![BrewBoy App Interface](ScreenShot1.png)
 
 ## Credits
 
