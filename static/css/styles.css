@@ -1,0 +1,566 @@
+/* Pip-Boy Theme CSS */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+}
+
+/* Pip-Boy Frame and Screen Positioning */
+.pip-boy-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/pip-boy.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* Note: You need to place pip-boy.jpg in the static/images directory */
+/* The screen-content positioning should be adjusted to match the screen area in your pip-boy.jpg */
+.screen-content {
+    position: relative;
+    /* These values use viewport units for better responsiveness */
+    width: min(60%, 650px); 
+    height: min(60%, 75vh);
+    /* Offset to position it exactly where the screen appears in your image */
+    transform: translate(15%, -15%); 
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2;
+}
+
+.container {
+    height: 100%;
+    max-width: 100%;
+    padding: 10px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Firefox scrollbar */
+@supports (scrollbar-width: thin) {
+    .container {
+        scrollbar-width: thin;
+        scrollbar-color: #00FF00 #003300;
+    }
+}
+
+/* WebKit scrollbar for Chrome, Safari, etc. */
+.container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.container::-webkit-scrollbar-track {
+    background: #003300;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background-color: #00FF00;
+    border-radius: 3px;
+}
+
+/* Main content styling */
+.header {
+    text-align: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #00FF00;
+    padding-bottom: 5px;
+}
+
+.header div, .header h1, .header h2 {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.header div.visible, .header h1.visible, .header h2.visible {
+    opacity: 1;
+}
+
+.robco-header {
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+    color: #00FF00;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+}
+
+.copyright {
+    font-size: clamp(0.4rem, 1.5vw, 0.6rem);
+    color: #00FF00;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
+
+.terminal-info {
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+    color: #00FF00;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.header h1 {
+    margin: 5px 0;
+    padding: 0;
+    font-size: clamp(0.9rem, 3vw, 1.3rem);
+    color: #00FF00;
+    text-shadow: 0 0 5px #00FF00;
+}
+
+.header h2 {
+    margin: 5px 0 0 0;
+    padding: 0;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    color: #00FF00;
+    text-shadow: 0 0 5px #00FF00;
+}
+
+/* Stats header and tabs */
+.stats-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #00FF00;
+    padding-bottom: 5px;
+}
+
+.icon-stat {
+    font-weight: bold;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+    color: #00FF00;
+}
+
+.pip-tabs {
+    display: flex;
+}
+
+.tab {
+    margin-left: 10px;
+    font-size: clamp(0.5rem, 2vw, 0.8rem);
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.tab.active {
+    opacity: 1;
+    color: #00FF00;
+    text-shadow: 0 0 3px #00FF00;
+    border-bottom: 2px solid #00FF00;
+}
+
+.panel {
+    border: 2px solid #00FF00;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    color: #00FF00;
+    text-shadow: 0 0 5px #00FF00;
+    background-color: rgba(0, 40, 0, 0.2);
+}
+
+.panel-title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    text-align: center;
+    border-bottom: 1px dotted #00FF00;
+    padding-bottom: 5px;
+}
+
+.data-section {
+    margin-bottom: 10px;
+}
+
+.data-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+}
+
+.data-label {
+    flex: 1;
+    text-transform: uppercase;
+}
+
+.data-value-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.data-value {
+    margin-bottom: 3px;
+}
+
+.gauge-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00FF00;
+    overflow: hidden;
+}
+
+.gauge-bar {
+    height: 100%;
+    background-color: #00FF00;
+    box-shadow: 0 0 10px 1px #00FF00;
+}
+
+.gauge-bar.temperature {
+    background-color: #FF9900;
+    box-shadow: 0 0 10px 1px #FF9900;
+}
+
+/* Inventory Section */
+.inventory-section {
+    margin: 15px 0;
+    border-top: 1px dotted #00FF00;
+    border-bottom: 1px dotted #00FF00;
+    padding: 10px 0;
+}
+
+.inventory-header {
+    text-align: center;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.inventory-display {
+    margin-bottom: 10px;
+}
+
+.inventory-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: clamp(0.6rem, 2vw, 0.8rem);
+    padding: 3px 0;
+    border-bottom: 1px dotted rgba(0, 255, 0, 0.3);
+}
+
+.item-name {
+    font-weight: bold;
+}
+
+.item-count {
+    background-color: rgba(0, 255, 0, 0.1);
+    padding: 0 5px;
+    border-radius: 3px;
+    min-width: 25px;
+    text-align: center;
+}
+
+.inventory-capacity {
+    margin-top: 10px;
+}
+
+.capacity-meter {
+    display: flex;
+    align-items: center;
+    font-size: clamp(0.6rem, 2vw, 0.8rem);
+}
+
+.capacity-label {
+    margin-right: 8px;
+    opacity: 0.8;
+}
+
+.capacity-bar-container {
+    flex: 1;
+    height: 8px;
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00FF00;
+    margin: 0 8px;
+    overflow: hidden;
+}
+
+.capacity-bar {
+    height: 100%;
+    background-color: #00FF00;
+    box-shadow: 0 0 10px 1px #00FF00;
+}
+
+.capacity-value {
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.system-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    border-top: 1px dotted #00FF00;
+    padding-top: 8px;
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+.status-message {
+    text-align: center;
+    font-size: clamp(0.6rem, 2.5vw, 0.9rem);
+    margin: 15px 0;
+    padding: 5px;
+    border: 1px solid #00FF00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blink-bracket {
+    margin: 0 5px;
+    animation: blink 1s infinite;
+}
+
+.warning {
+    color: #FF9900;
+    text-shadow: 0 0 5px #FF9900;
+    animation: pulse 1s infinite;
+}
+
+.warning .blink-bracket {
+    color: #FF9900;
+}
+
+/* Vault-Tec branding */
+.vault-tec-branding {
+    text-align: center;
+    margin: 10px 0;
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+    color: #00FF00;
+}
+
+.pip-footer-line {
+    height: 2px;
+    background-color: #00FF00;
+    margin: 5px 0;
+    box-shadow: 0 0 5px #00FF00;
+}
+
+.vault-boy-icon {
+    height: 30px;
+    margin: 5px auto;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300FF00"><path d="M12,2C6.48,2,2,6.48,2,12c0,5.52,4.48,10,10,10s10-4.48,10-10C22,6.48,17.52,2,12,2z M8,17.5c-1.38,0-2.5-1.12-2.5-2.5 c0-1.38,1.12-2.5,2.5-2.5s2.5,1.12,2.5,2.5C10.5,16.38,9.38,17.5,8,17.5z M12,12c-1.38,0-2.5-1.12-2.5-2.5 C9.5,8.12,10.62,7,12,7s2.5,1.12,2.5,2.5C14.5,10.88,13.38,12,12,12z M16,17.5c-1.38,0-2.5-1.12-2.5-2.5 c0-1.38,1.12-2.5,2.5-2.5s2.5,1.12,2.5,2.5C18.5,16.38,17.38,17.5,16,17.5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 5px;
+    font-size: clamp(0.5rem, 2vw, 0.7rem);
+    opacity: 0.8;
+    color: #00FF00;
+    text-shadow: 0 0 3px #00FF00;
+}
+
+/* Scanline effect */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 255, 0, 0.03) 50%,
+        rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 999;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* Vignette effect */
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 50px 10px rgba(0, 0, 0, 0.8);
+    z-index: 998;
+    pointer-events: none;
+}
+
+/* CRT flicker effect */
+@keyframes flicker {
+    0% { opacity: 0.97; }
+    5% { opacity: 0.9; }
+    10% { opacity: 0.97; }
+    15% { opacity: 1; }
+    60% { opacity: 0.97; }
+    70% { opacity: 0.9; }
+    80% { opacity: 1; }
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+@keyframes pulse {
+    0% { text-shadow: 0 0 5px #FF9900; }
+    50% { text-shadow: 0 0 15px #FF9900; }
+    100% { text-shadow: 0 0 5px #FF9900; }
+}
+
+.crt-effect {
+    animation: flicker 3s infinite;
+}
+
+/* Auto-refresh countdown */
+#countdown {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 12px;
+    opacity: 0.7;
+    color: #00FF00;
+    z-index: 1000;
+}
+
+/* Media Queries for Responsive Design */
+@media screen and (max-width: 1024px) {
+    .pip-boy-frame {
+        background-size: 120% auto;
+        background-position: center;
+    }
+    
+    .screen-content {
+        width: 50%;
+        height: 45%;
+        transform: translate(10%, -10%);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .pip-boy-frame {
+        background-size: 180% auto;
+        background-position: center 45%;
+    }
+    
+    .screen-content {
+        width: 65%;
+        height: 38%;
+        transform: translate(0%, 5%);
+    }
+    
+    .container {
+        padding: 8px;
+    }
+    
+    .panel {
+        padding: 8px;
+    }
+    
+    .data-row {
+        margin: 8px 0;
+    }
+    
+    .inventory-section {
+        margin: 10px 0;
+        padding: 8px 0;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .pip-boy-frame {
+        background-size: 220% auto;
+        background-position: center 42%;
+    }
+    
+    .screen-content {
+        width: 70%;
+        height: 32%;
+        transform: translate(0%, 8%);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pip-boy-frame {
+        background-size: 260% auto;
+        background-position: center 40%;
+    }
+    
+    .screen-content {
+        width: 75%;
+        height: 28%;
+        transform: translate(0%, 12%);
+    }
+    
+    .pip-tabs {
+        display: none;
+    }
+    
+    .capacity-meter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .capacity-label {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    
+    .capacity-bar-container {
+        margin: 5px 0;
+    }
+    
+    .panel {
+        border-width: 1px;
+    }
+    
+    .data-label, .data-value, .item-name, .item-count {
+        font-size: 0.7rem;
+    }
+}
+
+/* For very small devices */
+@media screen and (max-width: 360px) {
+    .pip-boy-frame {
+        background-size: 300% auto;
+        background-position: center 38%;
+    }
+    
+    .screen-content {
+        width: 80%;
+        height: 25%;
+        transform: translate(0%, 15%);
+    }
+    
+    .panel-title, .inventory-header {
+        font-size: 0.7rem;
+    }
+    
+    .container {
+        padding: 5px;
+    }
+} 

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BrewBoy v1.0</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Pip-Boy background frame -->
+    <div class="pip-boy-frame">
+        <!-- Screen content goes here -->
+        <div class="screen-content">
+            <div class="scanlines"></div>
+            <div class="vignette"></div>
+
+            <div class="container crt-effect">
+                <div class="header">
+                    <div class="robco-header">ROBCO INDUSTRIES UNIFIED OPERATING SYSTEM</div>
+                    <div class="copyright">COPYRIGHT 2075-2077 ROBCO INDUSTRIES</div>
+                    <div class="terminal-info">- SERVER 6 -</div>
+                    <h1>*** BREWBOY v1.0 ***</h1>
+                    <h2>Vault 1337 Beverage Monitoring System</h2>
+                </div>
+                
+                <div class="panel">
+                    <div class="stats-header">
+                        <div class="icon-stat">STAT</div>
+                        <div class="pip-tabs">
+                            <span class="tab active">BREW</span>
+                            <span class="tab">INV</span>
+                            <span class="tab">DATA</span>
+                            <span class="tab">MAP</span>
+                        </div>
+                    </div>
+
+                    <h2 class="panel-title">FRIDGE ENVIRONMENTAL STATUS</h2>
+                    
+                    <div class="data-section">
+                        <div class="data-row">
+                            <span class="data-label">TEMPERATURE:</span>
+                            <div class="data-value-container">
+                                <span class="data-value">{{ temp_value }} {{ temp_unit }}</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-bar temperature" style="width: {{ '70' if temp_value == 'N/A' else ((temp_value | to_float(0) / 10 * 100) | int if (temp_value | to_float(0)) < 10 else 100) }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="data-row">
+                            <span class="data-label">HUMIDITY:</span>
+                            <div class="data-value-container">
+                                <span class="data-value">{{ humidity_value }} {{ humidity_unit }}</span>
+                                <div class="gauge-container">
+                                    <div class="gauge-bar humidity" style="width: {{ '60' if humidity_value == 'N/A' else ((humidity_value | to_float(0) / 100 * 100) | int) }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="inventory-section">
+                        <div class="inventory-header">INVENTORY STATUS</div>
+                        <div class="inventory-display">
+                            <div class="inventory-row">
+                                <span class="item-name">NUKA-COLA QUANTUM</span>
+                                <span class="item-count">12</span>
+                            </div>
+                            <div class="inventory-row">
+                                <span class="item-name">VAULT-TEC LAGER</span>
+                                <span class="item-count">16</span>
+                            </div>
+                            <div class="inventory-row">
+                                <span class="item-name">WASTELAND IPA</span>
+                                <span class="item-count">10</span>
+                            </div>
+                        </div>
+                        <div class="inventory-capacity">
+                            <div class="capacity-meter">
+                                <div class="capacity-label">STORAGE</div>
+                                <div class="capacity-bar-container">
+                                    <div class="capacity-bar" style="width: 76%"></div>
+                                </div>
+                                <div class="capacity-value">38/50</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-message {% if 'Warning' in status_message %}warning{% endif %}">
+                        <div class="blink-bracket">&gt;</div> {{ status_message }} <div class="blink-bracket">&lt;</div>
+                    </div>
+
+                    <div class="system-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">SYSTEM:</span>
+                            <span class="stat-value">ONLINE</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">CONNECTION:</span>
+                            <span class="stat-value">SECURE</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">RADIATION:</span>
+                            <span class="stat-value">0 RAD</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="vault-tec-branding">
+                    <div class="pip-footer-line"></div>
+                    <div class="vault-boy-icon"></div>
+                    <p>VAULT-TEC® BEVERAGE CONSERVATION INITIATIVE</p>
+                    <div class="pip-footer-line"></div>
+                </div>
+                
+                <div class="footer">
+                    <p><span id="timestamp">{{ None|datetime }}</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auto-refresh countdown -->
+    <div id="countdown"></div>
+
+    <script>
+        // Auto-refresh every 30 seconds
+        let secondsLeft = 30;
+        
+        function updateCountdown() {
+            document.getElementById('countdown').textContent = 
+                `Refreshing in ${secondsLeft} seconds`;
+            
+            if (secondsLeft <= 0) {
+                location.reload();
+            } else {
+                secondsLeft--;
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        // Start countdown
+        updateCountdown();
+        
+        // Simulate terminal text printing
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.header div, .header h1, .header h2');
+            
+            let delay = 100;
+            
+            messages.forEach(function(message) {
+                setTimeout(function() {
+                    message.classList.add('visible');
+                }, delay);
+                delay += 400;
+            });
+        });
+
+        // Dynamic scaling and positioning
+        function adjustFrameSizing() {
+            const pipFrame = document.querySelector('.pip-boy-frame');
+            const screenContent = document.querySelector('.screen-content');
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const aspectRatio = width / height;
+            
+            // Reset any inline styles that might have been set
+            pipFrame.style.backgroundSize = '';
+            screenContent.style.transform = '';
+            
+            if (width <= 360) {
+                // Very small mobile devices
+                screenContent.style.transform = 'translate(0%, 0%)';
+                screenContent.style.width = '80%';
+                screenContent.style.height = '35%';
+            } else if (width <= 480) {
+                // Small mobile devices
+                screenContent.style.transform = 'translate(0%, 0%)';
+                screenContent.style.width = '75%';
+                screenContent.style.height = '40%';
+            } else if (width <= 576) {
+                // Medium mobile devices
+                screenContent.style.transform = 'translate(0%, 0%)';
+                screenContent.style.width = '70%';
+                screenContent.style.height = '50%';
+            } else if (width <= 768) {
+                // Tablets and large mobile
+                screenContent.style.transform = 'translate(0%, 0%)';
+                screenContent.style.width = '60%';
+                screenContent.style.height = '45%';
+            } else if (width <= 1024) {
+                // Small desktops & landscape tablets
+                screenContent.style.transform = 'translate(5%, -5%)';
+                screenContent.style.width = '50%';
+                screenContent.style.height = '42%';
+            } else if (width <= 1440) {
+                // Regular desktops
+                screenContent.style.transform = 'translate(15%, -15%)';
+                screenContent.style.width = '55%';
+                screenContent.style.height = '65%';
+            } else {
+                // Large desktop screens
+                screenContent.style.transform = 'translate(15%, -10%)';
+                screenContent.style.width = '45%';
+                screenContent.style.height = '55%';
+            }
+        }
+        
+        // Run on page load and window resize
+        window.addEventListener('load', adjustFrameSizing);
+        window.addEventListener('resize', adjustFrameSizing);
+        
+        // Also adjust when device changes orientation
+        window.addEventListener('orientationchange', function() {
+            setTimeout(adjustFrameSizing, 200); // Slight delay to ensure orientation has completed
+        });
+    </script>
+</body>
+</html> 
